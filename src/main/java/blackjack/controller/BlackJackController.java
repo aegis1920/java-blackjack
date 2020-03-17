@@ -1,7 +1,7 @@
 package blackjack.controller;
 
 import blackjack.domain.Rule;
-import blackjack.domain.RuleImpl;
+import blackjack.domain.BasicRule;
 import blackjack.domain.card.Deck;
 import blackjack.domain.participants.*;
 import blackjack.exceptions.InvalidPlayerException;
@@ -59,7 +59,7 @@ public class BlackJackController {
             OutputView.moreCardInstruction(player);
             wantsMoreCard = wantsToDrawMore(deck, player);
             OutputView.participantStatus(player);
-        } while (wantsMoreCard && !player.isBusted());
+        } while (wantsMoreCard && !BasicRule.isBusted(player));
     }
 
     private static boolean wantsToDrawMore(final Deck deck, final Player player) {
@@ -76,8 +76,8 @@ public class BlackJackController {
     }
 
     private static void endPhase(final Participants participants) {
-        Rule rule = new RuleImpl();
-        rule.judgeBasic(participants);
+        Rule rule = new BasicRule();
+        rule.judge(participants);
         OutputView.result(participants);
         OutputView.statistics(participants);
     }

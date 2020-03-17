@@ -43,11 +43,6 @@ public class Player implements Participant {
     }
 
     @Override
-    public boolean isBusted() {
-        return hand.isBusted();
-    }
-
-    @Override
     public String handStatus() {
         return hand.toString();
     }

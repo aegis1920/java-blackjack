@@ -36,7 +36,7 @@ public class HandTest {
         Card.from(Suit.SPADE, Rank.KING)
     );
 
-    @DisplayName("isBusted() 메서드가 작동됐는지 테스트")
+    /*@DisplayName("isBusted() 메서드가 작동됐는지 테스트")
     @ParameterizedTest(name = "{0}")
     @MethodSource("isBustedParameters")
     void isBustedTest(String message, List<Card> cards, boolean expected) {
@@ -54,7 +54,7 @@ public class HandTest {
                 CARDS_22_BUSTED, true
             )
         );
-    }
+    }*/
 
     @DisplayName("calculate() 메서드를 통한 합계 테스트")
     @ParameterizedTest(name = "{0}")

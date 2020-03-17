@@ -25,10 +25,6 @@ public class Hand {
         return cards.size() - Participants.FIRST_CARDS_COUNT;
     }
 
-    public boolean isBusted() {
-        return calculate() >= BLACK_JACK;
-    }
-
     public int calculate() {
         int total = cards.stream()
             .mapToInt(Card::getRankValue)

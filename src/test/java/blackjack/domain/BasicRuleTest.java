@@ -14,7 +14,7 @@ import blackjack.domain.participants.Dealer;
 import blackjack.domain.participants.Participants;
 import blackjack.domain.participants.Player;
 
-public class RuleImplTest {
+public class BasicRuleTest {
 
     @DisplayName("decideWinner()이 참가자들의 Result를 올바르게 바꾸는지")
     @Test
@@ -30,8 +30,8 @@ public class RuleImplTest {
         List<Player> players = Arrays.asList(pobi, jason);
 
         Participants participants = new Participants(dealer, players);
-        Rule ruleImpl = new RuleImpl();
-        ruleImpl.judgeBasic(participants);
+        Rule ruleImpl = new BasicRule();
+        ruleImpl.judge(participants);
 
         assertThat(pobi.getResult().getValue()).isEqualTo(LOSE.getValue());
         assertThat(jason.getResult().getValue()).isEqualTo(LOSE.getValue());

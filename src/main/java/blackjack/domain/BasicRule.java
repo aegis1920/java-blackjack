@@ -9,10 +9,15 @@ import blackjack.domain.participants.Participant;
 import blackjack.domain.participants.Participants;
 import blackjack.domain.participants.Player;
 
-public class RuleImpl implements Rule {
+public class BasicRule implements Rule {
+    public static final int BLACK_JACK = 21;
+
+    public static boolean isBusted(final Participant participant) {
+        return participant.score() > BLACK_JACK;
+    }
 
     private static void decideWinner(final Participant dealer, final Participant player) {
-        if (player.isBusted() || dealer.isBusted()) {
+        if (isBusted(player) || isBusted(dealer)) {
             decideWhenBusted(dealer, player);
             return;
         }
@@ -20,12 +25,12 @@ public class RuleImpl implements Rule {
     }
 
     private static void decideWhenBusted(final Participant dealer, final Participant player) {
-        if (player.isBusted()) {
+        if (isBusted(player)) {
             player.set(LOSE);
             dealer.set(WIN);
         }
 
-        if (!player.isBusted() && dealer.isBusted()) {
+        if (!isBusted(player) && isBusted(dealer)) {
             player.set(WIN);
             dealer.set(LOSE);
         }
@@ -49,11 +54,11 @@ public class RuleImpl implements Rule {
     }
 
     @Override
-    public void judgeBasic(Participants participants) {
+    public void judge(Participants participants) {
         Dealer dealer = participants.getDealer();
         List<Player> players = participants.getPlayers();
         for (Player player : players) {
-            RuleImpl.decideWinner(dealer, player);
+            BasicRule.decideWinner(dealer, player);
         }
     }
 }
