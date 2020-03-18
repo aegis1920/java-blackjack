@@ -5,16 +5,16 @@ import static blackjack.domain.participants.HandTest.*;
 import java.util.Arrays;
 import java.util.List;
 
-import blackjack.domain.Rule.BasicRule;
-import blackjack.domain.Rule.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import blackjack.domain.Rule.BasicResult;
+import blackjack.domain.Rule.Rusult;
 import blackjack.domain.participants.Dealer;
 import blackjack.domain.participants.Participants;
 import blackjack.domain.participants.Player;
 
-public class BasicRuleTest {
+public class BasicResultTest {
 
     @DisplayName("decideWinner()이 참가자들의 Result를 올바르게 바꾸는지")
     @Test
@@ -30,12 +30,12 @@ public class BasicRuleTest {
         List<Player> players = Arrays.asList(pobi, jason);
 
         Participants participants = new Participants(dealer, players);
-        Rule rule = new BasicRule();
-        rule.judge(participants);
+        Rusult rusult = new BasicResult();
+        rusult.judge(participants);
 
-//        assertThat(pobi.getGameResult().getValue()).isEqualTo(LOSE.getValue());
-//        assertThat(jason.getGameResult().getValue()).isEqualTo(LOSE.getValue());
-//        assertThat(dealer.getResult(WIN)).isEqualTo(2);
-//        assertThat(dealer.getResult(LOSE)).isEqualTo(0);
+        assertThat(pobi.getGameResult().getValue()).isEqualTo(LOSE.getValue());
+        assertThat(jason.getGameResult().getValue()).isEqualTo(LOSE.getValue());
+        assertThat(dealer.getResult(WIN)).isEqualTo(2);
+        assertThat(dealer.getResult(LOSE)).isEqualTo(0);
     }
 }

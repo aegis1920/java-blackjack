@@ -1,8 +1,5 @@
 package blackjack.domain.participants;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import blackjack.domain.card.Card;
 import blackjack.domain.card.Deck;
 
@@ -58,8 +55,13 @@ public class Dealer implements Participant {
     }
 
     @Override
+    public void makeBonus(Money money) {
+        this.money = this.money.multiply(1.5);
+    }
+
+    @Override
     public void make(Money opponentMoney) {
-        this.money = this.money.add(opponentMoney);
+        this.money = this.money.add(this.money);
     }
 
     @Override
@@ -71,6 +73,5 @@ public class Dealer implements Participant {
     public Money getMoney() {
         return money;
     }
-
 
 }

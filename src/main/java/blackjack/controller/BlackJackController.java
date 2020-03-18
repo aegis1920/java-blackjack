@@ -1,15 +1,19 @@
 package blackjack.controller;
 
-import blackjack.domain.Rule.MoneyRule;
-import blackjack.domain.Rule.Rule;
-import blackjack.domain.Rule.BasicRule;
+import java.util.List;
+
+import blackjack.domain.Rule.BasicResult;
+import blackjack.domain.Rule.MoneyResult;
+import blackjack.domain.Rule.Rusult;
 import blackjack.domain.card.Deck;
-import blackjack.domain.participants.*;
+import blackjack.domain.participants.Dealer;
+import blackjack.domain.participants.Participant;
+import blackjack.domain.participants.Participants;
+import blackjack.domain.participants.Player;
+import blackjack.domain.participants.Players;
 import blackjack.exceptions.InvalidPlayerException;
 import blackjack.view.InputView;
 import blackjack.view.OutputView;
-
-import java.util.List;
 
 public class BlackJackController {
     public static void run() {
@@ -18,7 +22,7 @@ public class BlackJackController {
         Dealer dealer = new Dealer();
         Players players = new Players(InputView.getInput());
 
-        for(Player player : players.getPlayers()) {
+        for (Player player : players.getPlayers()) {
             System.out.println(player.getName() + "님의 돈을 입력해주세요");
             player.initMoney(InputView.getInput());
         }
@@ -29,7 +33,7 @@ public class BlackJackController {
         dealerGamePhase(dealer);
         endPhase(participants);
 
-        for(Participant participant : participants) {
+        for (Participant participant : participants) {
             System.out.println(participant.getName() + " : " + participant.getMoney());
         }
 
@@ -71,7 +75,7 @@ public class BlackJackController {
             OutputView.moreCardInstruction(player);
             wantsMoreCard = wantsToDrawMore(deck, player);
             OutputView.participantStatus(player);
-        } while (wantsMoreCard && !BasicRule.isBusted(player.score()));
+        } while (wantsMoreCard && !BasicResult.isBusted(player.score()));
     }
 
     private static boolean wantsToDrawMore(final Deck deck, final Player player) {
@@ -88,9 +92,9 @@ public class BlackJackController {
     }
 
     private static void endPhase(final Participants participants) {
-        Rule rule = new MoneyRule();
-        rule.judge(participants);
+        Rusult rusult = new MoneyResult();
+        rusult.judge(participants);
         OutputView.result(participants);
-//        OutputView.statistics(participants);
+        //        OutputView.statistics(participants);
     }
 }

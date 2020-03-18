@@ -16,6 +16,8 @@ public interface Participant {
 
     String getName();
 
+    void makeBonus(Money money);
+
     void make(Money money);
 
     void lose(Money money);
