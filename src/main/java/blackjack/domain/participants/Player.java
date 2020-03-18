@@ -9,12 +9,13 @@ import java.util.Objects;
 public class Player implements Participant {
     private final Hand hand;
     private final String name;
-    private Result result;
+    private Money money;
 
     public Player(final String name) {
         validate(name);
         this.name = name.trim();
         this.hand = new Hand();
+        this.money = new Money(0);
     }
 
     private void validate(final String name) {
@@ -25,6 +26,14 @@ public class Player implements Participant {
 
     private boolean isNullOrEmpty(final String name) {
         return Objects.isNull(name) || name.trim().isEmpty();
+    }
+
+    public void initMoney(String cash) {
+        this.money = this.money.add(new Money(cash));
+    }
+
+    public Money getMoney() {
+        return money;
     }
 
     @Override
@@ -52,13 +61,18 @@ public class Player implements Participant {
         return name;
     }
 
-    public Result getResult() {
-        return result;
+    @Override
+    public void make(Money opponentMoney) {
+        this.money = this.money.add(opponentMoney);
     }
 
     @Override
-    public void set(final Result result) {
-        this.result = result;
+    public void lose(Money opponentMoney) {
+        this.money = this.money.subtract(opponentMoney);
+    }
+
+    public int countHand() {
+        return hand.size();
     }
 
     @Override

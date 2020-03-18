@@ -1,7 +1,8 @@
 package blackjack.controller;
 
-import blackjack.domain.Rule;
-import blackjack.domain.BasicRule;
+import blackjack.domain.Rule.MoneyRule;
+import blackjack.domain.Rule.Rule;
+import blackjack.domain.Rule.BasicRule;
 import blackjack.domain.card.Deck;
 import blackjack.domain.participants.*;
 import blackjack.exceptions.InvalidPlayerException;
@@ -16,11 +17,22 @@ public class BlackJackController {
         Deck deck = new Deck();
         Dealer dealer = new Dealer();
         Players players = new Players(InputView.getInput());
+
+        for(Player player : players.getPlayers()) {
+            System.out.println(player.getName() + "님의 돈을 입력해주세요");
+            player.initMoney(InputView.getInput());
+        }
+
         Participants participants = getParticipants(dealer, players);
         initialPhase(deck, participants);
         userGamePhase(deck, participants);
         dealerGamePhase(dealer);
         endPhase(participants);
+
+        for(Participant participant : participants) {
+            System.out.println(participant.getName() + " : " + participant.getMoney());
+        }
+
     }
 
     private static Participants getParticipants(final Dealer dealer, Players players) {
@@ -59,7 +71,7 @@ public class BlackJackController {
             OutputView.moreCardInstruction(player);
             wantsMoreCard = wantsToDrawMore(deck, player);
             OutputView.participantStatus(player);
-        } while (wantsMoreCard && !BasicRule.isBusted(player));
+        } while (wantsMoreCard && !BasicRule.isBusted(player.score()));
     }
 
     private static boolean wantsToDrawMore(final Deck deck, final Player player) {
@@ -76,9 +88,9 @@ public class BlackJackController {
     }
 
     private static void endPhase(final Participants participants) {
-        Rule rule = new BasicRule();
+        Rule rule = new MoneyRule();
         rule.judge(participants);
         OutputView.result(participants);
-        OutputView.statistics(participants);
+//        OutputView.statistics(participants);
     }
 }

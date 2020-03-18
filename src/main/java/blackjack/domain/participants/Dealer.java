@@ -10,20 +10,15 @@ public class Dealer implements Participant {
     public static final int DEALER_DRAW_CRITERIA = 17;
 
     private Hand hand;
-    private Map<Result, Integer> result;
+    private Money money;
 
     public Dealer() {
         this.hand = new Hand();
-        this.result = new HashMap<>();
+        this.money = new Money(0);
     }
 
     public int countAddedCard() {
         return hand.countAddedCard();
-    }
-
-    @Override
-    public void set(final Result result) {
-        this.result.put(result, this.result.getOrDefault(result, 0) + 1);
     }
 
     @Override
@@ -57,12 +52,25 @@ public class Dealer implements Participant {
         return hand.toString();
     }
 
-    public int getResult(final Result result) {
-        return this.result.getOrDefault(result, 0);
-    }
-
     @Override
     public String getName() {
         return "딜러";
     }
+
+    @Override
+    public void make(Money opponentMoney) {
+        this.money = this.money.add(opponentMoney);
+    }
+
+    @Override
+    public void lose(Money opponentMoney) {
+        this.money = this.money.subtract(opponentMoney);
+    }
+
+    @Override
+    public Money getMoney() {
+        return money;
+    }
+
+
 }

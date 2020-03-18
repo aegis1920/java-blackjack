@@ -50,6 +50,10 @@ public class Hand {
         );
     }
 
+    public int size() {
+        return cards.size();
+    }
+
     @Override
     public String toString() {
         return cards.stream()

@@ -41,12 +41,18 @@ public class Money {
         return new Money(this.amount + other.amount);
     }
 
-    public Money multiply(final Money other) {
-        return new Money(this.amount * other.amount);
+    public Money multiply(final double number) {
+        return new Money((long) (this.amount * number));
     }
 
     public Money subtract(final Money other) {
         return new Money(this.amount - other.amount);
+    }
 
+    @Override
+    public String toString() {
+        return "Money{" +
+                "amount=" + amount +
+                '}';
     }
 }

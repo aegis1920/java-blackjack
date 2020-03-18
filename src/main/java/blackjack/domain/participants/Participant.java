@@ -12,9 +12,13 @@ public interface Participant {
 
     boolean isDealer();
 
-    void set(Result result);
-
     String handStatus();
 
     String getName();
+
+    void make(Money money);
+
+    void lose(Money money);
+
+    Money getMoney();
 }
