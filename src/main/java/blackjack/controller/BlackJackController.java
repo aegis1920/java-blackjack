@@ -1,8 +1,9 @@
 package blackjack.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import blackjack.domain.Rule.BasicResult;
+import blackjack.domain.Result.BasicRule;
 import blackjack.domain.Rule.MoneyResult;
 import blackjack.domain.Rule.Rusult;
 import blackjack.domain.card.Deck;
@@ -22,10 +23,12 @@ public class BlackJackController {
         Dealer dealer = new Dealer();
         Players players = new Players(InputView.getInput());
 
+        List<String> inputMoneys = new ArrayList<>();
         for (Player player : players.getPlayers()) {
             System.out.println(player.getName() + "님의 돈을 입력해주세요");
-            player.initMoney(InputView.getInput());
+            inputMoneys.add(InputView.getInput());
         }
+        players.initPlayersMoney(inputMoneys);
 
         Participants participants = getParticipants(dealer, players);
         initialPhase(deck, participants);
@@ -33,10 +36,11 @@ public class BlackJackController {
         dealerGamePhase(dealer);
         endPhase(participants);
 
-        for (Participant participant : participants) {
-            System.out.println(participant.getName() + " : " + participant.getMoney());
-        }
+        System.out.println(MoneyResult.getDealerMoney());
 
+        for (Participant participant : MoneyResult.getPlayersMoney().keySet()) {
+            System.out.println(MoneyResult.getPlayersMoney().get(participant));
+        }
     }
 
     private static Participants getParticipants(final Dealer dealer, Players players) {
@@ -75,7 +79,7 @@ public class BlackJackController {
             OutputView.moreCardInstruction(player);
             wantsMoreCard = wantsToDrawMore(deck, player);
             OutputView.participantStatus(player);
-        } while (wantsMoreCard && !BasicResult.isBusted(player.score()));
+        } while (wantsMoreCard && !BasicRule.isBusted(player.score()));
     }
 
     private static boolean wantsToDrawMore(final Deck deck, final Player player) {

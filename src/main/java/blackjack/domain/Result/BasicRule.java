@@ -7,7 +7,7 @@ import java.util.function.BiPredicate;
 import blackjack.domain.participants.Participant;
 import blackjack.domain.participants.Player;
 
-public enum BasicRule implements Rule {
+public enum BasicRule {
     WIN_BLACK_JACK("승", (Participant dealer, Participant player) ->
         isBlackjack((Player)player) && (isBusted(dealer.score()) || (dealer.score() < player.score()) && !isBusted(
             player.score()))
@@ -34,6 +34,10 @@ public enum BasicRule implements Rule {
         this.condition = condition;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     public static boolean isBusted(final int score) {
         return score > BUST_LIMIT;
     }
@@ -51,8 +55,7 @@ public enum BasicRule implements Rule {
         throw new IllegalArgumentException("승무패 중 결정할 수 없습니다.");
     }
 
-    @Override
-    public void set(Participant participant, Rule rule) {
+    public static void set(Participant participant, BasicRule rule) {
         dealerResult.put(rule, dealerResult.getOrDefault(rule, 0) + 1);
         playerResults.put(participant, rule);
     }

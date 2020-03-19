@@ -7,11 +7,9 @@ public class Dealer implements Participant {
     public static final int DEALER_DRAW_CRITERIA = 17;
 
     private Hand hand;
-    private Money money;
 
     public Dealer() {
         this.hand = new Hand();
-        this.money = new Money(0);
     }
 
     public int countAddedCard() {
@@ -53,25 +51,4 @@ public class Dealer implements Participant {
     public String getName() {
         return "딜러";
     }
-
-    @Override
-    public void makeBonus(Money money) {
-        this.money = this.money.multiply(1.5);
-    }
-
-    @Override
-    public void make(Money opponentMoney) {
-        this.money = this.money.add(this.money);
-    }
-
-    @Override
-    public void lose(Money opponentMoney) {
-        this.money = this.money.subtract(opponentMoney);
-    }
-
-    @Override
-    public Money getMoney() {
-        return money;
-    }
-
 }

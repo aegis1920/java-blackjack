@@ -15,12 +15,4 @@ public interface Participant {
     String handStatus();
 
     String getName();
-
-    void makeBonus(Money money);
-
-    void make(Money money);
-
-    void lose(Money money);
-
-    Money getMoney();
 }

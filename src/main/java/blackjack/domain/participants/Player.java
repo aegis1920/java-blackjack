@@ -9,13 +9,11 @@ import blackjack.exceptions.InvalidPlayerException;
 public class Player implements Participant {
     private final Hand hand;
     private final String name;
-    private Money money;
 
     public Player(final String name) {
         validate(name);
         this.name = name.trim();
         this.hand = new Hand();
-        this.money = new Money(0);
     }
 
     private void validate(final String name) {
@@ -26,14 +24,6 @@ public class Player implements Participant {
 
     private boolean isNullOrEmpty(final String name) {
         return Objects.isNull(name) || name.trim().isEmpty();
-    }
-
-    public void initMoney(String cash) {
-        this.money = this.money.add(new Money(cash));
-    }
-
-    public Money getMoney() {
-        return money;
     }
 
     @Override
@@ -59,21 +49,6 @@ public class Player implements Participant {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void makeBonus(Money money) {
-        this.money = this.money.multiply(1.5);
-    }
-
-    @Override
-    public void make(Money opponentMoney) {
-        this.money = this.money.add(opponentMoney);
-    }
-
-    @Override
-    public void lose(Money opponentMoney) {
-        this.money = this.money.subtract(opponentMoney);
     }
 
     public int countHand() {

@@ -1,19 +1,19 @@
 package blackjack.domain.Result;
 
-import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
+import blackjack.domain.Rule.MoneyResult;
 import blackjack.domain.participants.Money;
 import blackjack.domain.participants.Participant;
 
-public enum MoneyRule implements Rule {
+public enum MoneyRule {
     WIN_BLACK_JACK_MONEY(basicRule -> basicRule == BasicRule.WIN_BLACK_JACK,
-        (player, bettingMoney) -> player.makeBonus(bettingMoney)),
+        (player, bettingMoney) -> MoneyResult.makeBonus(player, bettingMoney)),
     WIN_MONEY(basicRule -> basicRule == BasicRule.WIN,
-        (player, bettingMoney) -> player.make(bettingMoney)),
+        (player, bettingMoney) -> MoneyResult.make(player, bettingMoney)),
     LOSE_MONEY(basicRule -> basicRule == BasicRule.LOSE,
-        (player, bettingMoney) -> player.lose(bettingMoney));
+        (player, bettingMoney) -> MoneyResult.lose(player, bettingMoney));
 
     private final Predicate<BasicRule> expression;
     private final BiConsumer<Participant, Money> logic;
@@ -23,17 +23,25 @@ public enum MoneyRule implements Rule {
         this.logic = logic;
     }
 
-    public void applyResultOfPlayer(Participant participant, Money money, BasicRule basicRule) {
-        Arrays.stream(MoneyRule.values())
-            .filter(moneyRule -> moneyRule.expression.test(basicRule))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("없는 값입니다!"))
-            .logic
-            .accept(participant, money);
+    public static boolean isNotDraw(BasicRule basicRule) {
+        return basicRule == BasicRule.DRAW;
     }
 
-    @Override
-    public void set(Participant participant, Rule rule) {
+    public static void applyResultOfPlayer(Participant participant, Money money, BasicRule basicRule) {
+        System.out.println(participant.getName() + " : " + money + " : " + basicRule.getValue());
 
+        for (MoneyRule moneyRule : MoneyRule.values()) {
+            if (moneyRule.expression.test(basicRule)) {
+                moneyRule.logic.accept(participant, money);
+            }
+        }
+
+        // Arrays.stream(MoneyRule.values())
+        //     .filter(moneyRule -> moneyRule.isNotDraw(basicRule))
+        //     .filter(moneyRule -> moneyRule.expression.test(basicRule))
+        //     .findFirst()
+        //     .orElseThrow(() -> new IllegalArgumentException("없는 값입니다!"))
+        //     .logic
+        //     .accept(participant, money);
     }
 }
